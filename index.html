@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic Meta Tags -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  
+  <!-- Page Title -->
+  <title>Enhanced Quiz App</title>
+  
+  <!-- External CSS Links -->
+  <!-- Bootstrap CSS for responsive components -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Our custom CSS file -->
+  <link href="styles.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- Main Quiz Container -->
+<div class="quiz-container">
+  <!-- Login Screen -->
+  <div class="quiz-card fade-in" id="login-screen">
+    <div class="quiz-header">
+      <h1><i class="fas fa-brain me-3"></i>Enhanced Quiz Master</h1>
+      <p class="mb-0 fs-5">Test your programming knowledge across multiple languages!</p>
+    </div>
+    <div class="quiz-body">
+      <div class="mb-4">
+        <label for="username" class="form-label fw-bold">
+          <i class="fas fa-user me-2"></i>Enter Your Name
+        </label>
+        <input type="text" class="form-control" id="username" placeholder="Your awesome name here..." required>
+      </div>
+      <div class="mb-4">
+        <label for="categorySelect" class="form-label fw-bold">
+          <i class="fas fa-tags me-2"></i>Choose Programming Language
+        </label>
+        <select class="form-select" id="categorySelect">
+          <option value="html">🌐 HTML - HyperText Markup Language</option>
+          <option value="css">🎨 CSS - Cascading Style Sheets</option>
+          <option value="javascript">⚡ JavaScript - Dynamic Programming</option>
+          <option value="python">🐍 Python - General Purpose Programming</option>
+          <option value="java">☕ Java - Object-Oriented Programming</option>
+          <option value="react">⚛️ React - Frontend Framework</option>
+          <option value="nodejs">🟢 Node.js - Backend JavaScript</option>
+          <option value="sql">🗄️ SQL - Database Query Language</option>
+        </select>
+      </div>
+      <button class="btn btn-primary btn-lg w-100 pulse" onclick="startQuiz()">
+        <i class="fas fa-play me-2"></i>Start Quiz Adventure
+      </button>
+    </div>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div class="quiz-card fade-in" id="quiz-screen" style="display:none;">
+    <div class="quiz-header">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="user-badge">
+          <i class="fas fa-user"></i>
+          <span id="userDisplay"></span>
+        </div>
+        <div class="timer" id="timerDisplay">
+          <i class="fas fa-clock"></i>
+          <span id="timer">15</span>
+        </div>
+      </div>
+    </div>
+    <div class="quiz-body">
+      <div class="progress mb-4">
+        <div class="progress-bar" id="progressBar" role="progressbar"></div>
+      </div>
+      
+      <div class="quiz-info">
+        <h4 id="question" class="mb-0">Loading your question...</h4>
+      </div>
+      
+      <div id="answers" class="mb-4"></div>
+      
+      <button id="nextBtn" class="btn btn-primary btn-lg w-100" onclick="nextQuestion()" style="display:none;">
+        <i class="fas fa-arrow-right me-2"></i>Next Question
+      </button>
+    </div>
+  </div>
+
+  <!-- Result Screen -->
+  <div class="quiz-card fade-in" id="result-screen" style="display:none;">
+    <div class="quiz-header">
+      <h1><i class="fas fa-trophy me-3"></i>Quiz Complete!</h1>
+    </div>
+    <div class="quiz-body text-center">
+      <div class="result-score" id="resultScore">0/0</div>
+      <h4 id="resultText" class="mb-3"></h4>
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle me-2"></i>
+        <span id="attemptsText"></span>
+      </div>
+      
+      <div class="scoreboard">
+        <h5 class="fw-bold mb-3">
+          <i class="fas fa-medal me-2"></i>Top Performers
+        </h5>
+        <div id="scoreList"></div>
+      </div>
+      
+      <button class="btn btn-primary btn-lg w-100 mt-4" onclick="tryAgain()">
+        <i class="fas fa-redo me-2"></i>Try Again
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- External JavaScript Links -->
+<!-- Bootstrap JS Bundle with Popper -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<!-- Our main application script -->
+<script src="app.js"></script>
+
+</body>
+</html>

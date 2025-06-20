@@ -1,0 +1,271 @@
+/* Main body styling with gradient background */
+body {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Quiz container styling - centers the quiz card */
+.quiz-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Main quiz card styling with glass morphism effect */
+.quiz-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 600px;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Header styling with gradient background */
+.quiz-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+}
+
+/* Subtle texture overlay for header */
+.quiz-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.15"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.3;
+}
+
+/* Quiz body padding */
+.quiz-body {
+  padding: 2rem;
+}
+
+/* Form control styling */
+.form-control, .form-select {
+  border-radius: 15px;
+  border: 2px solid #e9ecef;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+/* Form control focus state */
+.form-control:focus, .form-select:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Primary button styling */
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  border-radius: 15px;
+  padding: 12px 30px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+}
+
+/* Primary button hover state */
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+}
+
+/* Answer button styling */
+.answer-btn {
+  background: white;
+  border: 2px solid #e9ecef;
+  border-radius: 15px;
+  padding: 15px 20px;
+  margin: 8px 0;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  text-align: left;
+  width: 100%;
+}
+
+/* Answer button hover state */
+.answer-btn:hover {
+  border-color: #667eea;
+  background: rgba(102, 126, 234, 0.1);
+  transform: translateX(5px);
+}
+
+/* Disabled answer button state */
+.answer-btn:disabled:hover {
+  transform: none;
+}
+
+/* Correct answer styling */
+.correct {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: white !important;
+  border-color: #10b981 !important;
+}
+
+/* Incorrect answer styling */
+.incorrect {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+  color: white !important;
+  border-color: #ef4444 !important;
+}
+
+/* Progress bar container */
+.progress {
+  height: 15px;
+  border-radius: 10px;
+  background: #e9ecef;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+/* Progress bar styling */
+.progress-bar {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  transition: width 0.5s ease;
+}
+
+/* Quiz info box styling */
+.quiz-info {
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 15px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Timer styling */
+.timer {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Warning state for timer */
+.timer.warning {
+  animation: pulse 1s infinite;
+}
+
+/* User badge styling */
+.user-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Scoreboard container */
+.scoreboard {
+  background: rgba(102, 126, 234, 0.05);
+  border-radius: 15px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Individual score item */
+.score-item {
+  background: white;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 8px 0;
+  border-left: 4px solid #667eea;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Score rank indicator */
+.score-rank {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Result score display */
+.result-score {
+  font-size: 3rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  margin: 1rem 0;
+}
+
+/* Fade-in animation */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+/* Keyframes for fade-in animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Pulse animation */
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+/* Keyframes for pulse animation */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Category icon styling */
+.category-icon {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 576px) {
+  .quiz-header h1 {
+    font-size: 2rem;
+  }
+  
+  .quiz-body {
+    padding: 1.5rem;
+  }
+  
+  .form-control, .form-select, .btn-primary {
+    padding: 10px 15px;
+    font-size: 1rem;
+  }
+}

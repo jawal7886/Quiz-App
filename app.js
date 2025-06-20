@@ -9,41 +9,8 @@
  * - Animations and visual feedback
  */
 
-// Question database for multiple programming languages
-const allQuestions = {
-  html: [
-    { question: "What does HTML stand for?", options: ["Hyper Text Markup Language", "Hyperlink Text Management Language", "Home Tool Markup Language", "Hyper Tool Multi Language"], answer: "Hyper Text Markup Language" },
-    // More HTML questions...
-  ],
-  css: [
-    { question: "What does CSS stand for?", options: ["Cascading Style Sheets", "Colorful Style Syntax", "Computer Style Sheets", "Creative Style Selector"], answer: "Cascading Style Sheets" },
-    // More CSS questions...
-  ],
-  javascript: [
-    { question: "Which language runs in the browser?", options: ["Java", "Python", "C++", "JavaScript"], answer: "JavaScript" },
-    // More JavaScript questions...
-  ],
-  python: [
-    { question: "What is the correct file extension for Python files?", options: [".py", ".python", ".pt", ".pyt"], answer: ".py" },
-    // More Python questions...
-  ],
-  java: [
-    { question: "What is the correct way to create an object called myObj of MyClass?", options: ["MyClass myObj = new MyClass();", "new myObj = MyClass();", "MyClass myObj = MyClass();", "create MyClass myObj;"], answer: "MyClass myObj = new MyClass();" },
-    // More Java questions...
-  ],
-  react: [
-    { question: "What does JSX stand for?", options: ["JavaScript XML", "Java Syntax Extension", "JavaScript Extension", "Java XML"], answer: "JavaScript XML" },
-    // More React questions...
-  ],
-  nodejs: [
-    { question: "What is Node.js?", options: ["A JavaScript runtime for server-side", "A web browser", "A database", "A CSS framework"], answer: "A JavaScript runtime for server-side" },
-    // More Node.js questions...
-  ],
-  sql: [
-    { question: "What does SQL stand for?", options: ["Structured Query Language", "Standard Query Language", "Sequential Query Language", "Simple Query Language"], answer: "Structured Query Language" },
-    // More SQL questions...
-  ]
-};
+// Remove hardcoded allQuestions object
+const OPENTDB_API_URL = 'https://opentdb.com/api.php?amount=10';
 
 // Quiz state variables
 let currentQuestion = 0;      // Current question index
@@ -57,6 +24,10 @@ let gameState = {             // Global game state
   attempts: {}                // Attempts per user per category
 };
 
+// Tracking skipped questions
+let skippedQuestions = 0;
+const MAX_SKIPPED_QUESTIONS = 3;
+
 // DOM element references
 const loginScreen = document.getElementById('login-screen');
 const quizScreen = document.getElementById('quiz-screen');
@@ -69,10 +40,34 @@ const timerEl = document.getElementById('timer');
 const timerDisplay = document.getElementById('timerDisplay');
 const progressBar = document.getElementById('progressBar');
 
+// Fetch questions from OpenTDB API
+async function fetchQuestions(category) {
+  try {
+    const response = await fetch(`https://opentdb.com/api.php?amount=10&category=${category}`);
+    const data = await response.json();
+    
+    // Transform OpenTDB questions to match our quiz format
+    quizData = data.results.map(q => ({
+      question: decodeURIComponent(q.question),
+      options: shuffle([
+        ...q.incorrect_answers.map(ans => decodeURIComponent(ans)), 
+        decodeURIComponent(q.correct_answer)
+      ]),
+      answer: decodeURIComponent(q.correct_answer)
+    }));
+
+    return quizData;
+  } catch (error) {
+    console.error('Error fetching questions:', error);
+    showAlert('Failed to load questions. Please try again.');
+    return [];
+  }
+}
+
 /**
  * Starts the quiz after validation
  */
-function startQuiz() {
+async function startQuiz() {
   const username = document.getElementById('username').value.trim();
   selectedCategory = document.getElementById('categorySelect').value;
 
@@ -87,8 +82,9 @@ function startQuiz() {
     return;
   }
 
-  // Initialize quiz data with shuffled questions
-  quizData = shuffle([...allQuestions[selectedCategory]]);
+  // Fetch questions from OpenTDB
+  await fetchQuestions(selectedCategory);
+  
   userDisplay.textContent = username;
   
   // Reset quiz state
@@ -134,6 +130,9 @@ function loadQuestion() {
   // Update UI
   updateProgress();
   startTimer();
+
+  // Update skip and change category buttons
+  document.getElementById('skipQuestionBtn').textContent = `Skip Question (${MAX_SKIPPED_QUESTIONS - skippedQuestions} left)`;
 }
 
 /**
@@ -193,10 +192,17 @@ function showResult() {
   // Update result display
   document.getElementById("resultScore").textContent = `${score}/${total}`;
   
+  // Add skipped questions info
+  const attemptsText = document.getElementById("attemptsText");
+  attemptsText.innerHTML = `
+    <strong>Skipped Questions:</strong> ${skippedQuestions}<br>
+    <strong>Category:</strong> ${selectedCategory}
+  `;
+  
   // Determine result message based on percentage
   let resultMessage = "";
   if (percentage >= 90) {
-    resultMessage = `🏆 Outstanding, ${username}! You're a true ${selectedCategory.toUpperCase()} expert!`;
+    resultMessage = `🏆 Outstanding, ${username}! You're a true quiz master!`;
   } else if (percentage >= 80) {
     resultMessage = `🎉 Excellent work, ${username}! You really know your ${selectedCategory.toUpperCase()}!`;
   } else if (percentage >= 70) {
@@ -371,6 +377,48 @@ function showAlert(message) {
       alertDiv.remove();
     }
   }, 4000);
+}
+
+/**
+ * Change category during the quiz
+ */
+function changeCategory() {
+  // Show login screen again to select a new category
+  quizScreen.style.display = 'none';
+  loginScreen.style.display = 'block';
+  
+  // Reset game state
+  currentQuestion = 0;
+  score = 0;
+  quizData = [];
+  skippedQuestions = 0;
+}
+
+/**
+ * Skip the current question
+ */
+function skipQuestion() {
+  // Increment skipped questions counter
+  skippedQuestions++;
+  
+  // Check if max skips reached
+  if (skippedQuestions >= MAX_SKIPPED_QUESTIONS) {
+    showAlert(`You've reached the maximum number of skipped questions (${MAX_SKIPPED_QUESTIONS}). Moving to results.`);
+    showResult();
+    return;
+  }
+  
+  // Move to next question
+  currentQuestion++;
+  
+  // Check if quiz is complete
+  if (currentQuestion >= quizData.length) {
+    showResult();
+    return;
+  }
+  
+  // Load next question
+  loadQuestion();
 }
 
 // Initialize app when DOM is loaded
